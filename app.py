@@ -1,37 +1,57 @@
 import streamlit as st
-from sklearn.linear_model import LogisticRegression
+import time
+import random
 
-st.set_page_config(page_title="AI 及格预测器", page_icon="🎓", layout="centered")
+# 设置网页标题
+st.set_page_config(page_title="我的 AI 宠物", page_icon="🐱", layout="centered")
 
-X = [[1], [2], [3], [4], [5], [6], [7], [8]]
-y = [0, 0, 0, 0, 1, 1, 1, 1]
-model = LogisticRegression()
-model.fit(X, y)
-
-# 左侧边栏不变
+# 侧边栏
 with st.sidebar:
-    st.image("https://cdn-icons-png.flaticon.com/512/3426/3426651.png", width=100)
-    st.title("关于这个 App")
-    st.info("这是一个基于逻辑回归的 AI 小工具，用来预测学生的及格概率。")
-    st.write("👨‍💻 开发者：Alessioo Ng")
-    st.write("🚀 用 Streamlit 极速构建")
+    st.title("🐱 宠物档案")
+    st.write("名字：Alessioo 的小助手")
+    st.write("状态：正在学习中...")
+    st.info("这是一个没有接大模型 API 的纯前端演示版。")
 
 # 网页主体
-st.title("🎓 大学生及格概率预测器")
+st.title("🐱 我的 AI 电子宠物")
 st.divider()
 
-# 直接竖排，取消分列（这样手机端完美显示）
-study_hours = st.number_input("请输入你的学习时长（小时）：", min_value=0.0, max_value=24.0, value=3.5, step=0.5)
+# 初始化聊天记录（存在浏览器的内存里）
+if "messages" not in st.session_state:
+    st.session_state.messages = [{"role": "assistant", "content": "主人你好！我是你的 AI 宠物，今天想聊点什么？"}]
 
-# 按钮占满全宽
-if st.button("🤖 开始 AI 预测", use_container_width=True):
-    prediction = model.predict([[study_hours]])[0]
-    probability = model.predict_proba([[study_hours]])[0][1] * 100
+# 循环展示历史聊天记录
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
+        st.write(msg["content"])
+
+# 接收用户输入（这就是 Streamlit 专属的聊天输入框）
+if prompt := st.chat_input("和你的宠物说点什么吧..."):
     
-    st.divider()
-    if prediction == 1:
-        st.success("预测结果：恭喜，大概率及格！")
-    else:
-        st.error("预测结果：危险，大概率不及格。")
+    # 1. 先把用户的话存进记录并显示出来
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.write(prompt)
+
+    # 2. 模拟 AI 思考和回复的过程
+    with st.chat_message("assistant"):
+        message_placeholder = st.empty() # 用来占位
+        with st.spinner("AI 宠物正在思考中..."):
+            time.sleep(1) # 假装思考 1 秒
+            
+            # 这里是“模拟大脑”，用简单的规则代替真正的大模型
+            if "你好" in prompt or "hello" in prompt.lower():
+                ai_reply = "汪汪/喵喵！主人好呀！"
+            elif "吃" in prompt:
+                ai_reply = "我饿了！想吃小鱼干或者喂我一点数据垃圾~"
+            elif "你是谁" in prompt:
+                ai_reply = "我是你亲手写代码创造出来的第一只 AI 宠物！"
+            else:
+                replies = ["听起来很有趣！", "我不太懂，但我大受震撼。", "如果接入了真实的大模型，我会回答得更聪明哦！"]
+                ai_reply = random.choice(replies)
+            
+            # 显示回复
+            message_placeholder.write(ai_reply)
     
-    st.metric(label="AI 算出的及格概率", value=f"{probability:.1f}%")
+    # 3. 把 AI 的回复也存进记录
+    st.session_state.messages.append({"role": "assistant", "content": ai_reply})
