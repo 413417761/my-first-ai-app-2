@@ -5,7 +5,6 @@ from zhipuai import ZhipuAI
 st.set_page_config(page_title="包子", page_icon="🐱", layout="centered")
 
 # 侧边栏
-# 侧边栏
 with st.sidebar:
     st.title("🐱 宠物档案")
     st.write("名字：Alessioo 的小助手")
@@ -28,7 +27,7 @@ st.title("🐱 包子")
 st.divider()
 
 # 初始化聊天记录
-                        messages=[{"role": "system", "content": system_prompt}] + st.session_state.messages,
+messages=[{"role": "system", "content": system_prompt}] + st.session_state.messages,
 
 # 循环展示历史聊天记录
 for msg in st.session_state.messages:
