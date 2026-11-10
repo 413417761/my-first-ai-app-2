@@ -5,7 +5,7 @@ from zhipuai import ZhipuAI
 st.set_page_config(page_title="包子", page_icon="🐱", layout="centered")
 
 # 侧边栏
-    st.divider()
+st.divider()
     # 让用户自己定义 AI 的性格
     system_prompt = st.text_area(
         "设置 AI 角色（性格）：", 
