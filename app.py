@@ -2,12 +2,12 @@ import streamlit as st
 from zhipuai import ZhipuAI
 
 # 设置网页标题
-st.set_page_config(page_title="我的 AI 宠物", page_icon="🐱", layout="centered")
+st.set_page_config(page_title="包子", page_icon="🐱", layout="centered")
 
 # 侧边栏
 with st.sidebar:
     st.title("🐱 宠物档案")
-    st.write("名字：Alessioo 的小助手")
+    st.write("名字：Alessioo 的宠物小助手")
     st.success("状态：已接入真实大模型大脑 🧠")
     
     # ⚠️ 这里需要输入你的 API Key
@@ -15,7 +15,7 @@ with st.sidebar:
     st.info("你的 Key 只会在本地浏览器中运行，不会上传到服务器，放心使用。")
 
 # 网页主体
-st.title("🐱 我的 AI 电子宠物")
+st.title("🐱 包子")
 st.divider()
 
 # 初始化聊天记录
