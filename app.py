@@ -46,7 +46,7 @@ if prompt := st.chat_input("和你的宠物说点什么吧..."):
     if not api_key:
         st.warning("请先在左侧边栏输入你的智谱 API Key 哦！")
     else:
-        with st.chat_message("assistant"):
+             with st.chat_message("assistant"):
             message_placeholder = st.empty()
             with st.spinner("AI 宠物思考中..."):
                 try:
@@ -54,14 +54,13 @@ if prompt := st.chat_input("和你的宠物说点什么吧..."):
                     client = ZhipuAI(api_key=api_key)
                     # 调用免费模型
                     response = client.chat.completions.create(
-                        model="glm-4-flash", # 这是完全免费的模型
-                        messages=[{"role": "system", "content": "你是一只可爱的、性格有点傲娇的电子宠物。请用简短、活泼的语气和主人聊天。"}] + st.session_state.messages,
+                        model="glm-4-flash",
+                        messages=[{"role": "system", "content": system_prompt}] + st.session_state.messages,
                         stream=False
                     )
                     ai_reply = response.choices[0].message.content
                     message_placeholder.write(ai_reply)
                     
-                    # 3. 保存回复
                     st.session_state.messages.append({"role": "assistant", "content": ai_reply})
                 except Exception as e:
                     st.error(f"AI 连不上网啦，报错信息：{e}")
