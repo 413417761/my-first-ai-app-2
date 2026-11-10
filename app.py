@@ -13,7 +13,7 @@ with st.sidebar:
     st.info("这是一个没有接大模型 API 的纯前端演示版。")
 
 # 网页主体
-st.title("🐱 我的 AI 电子宠物")
+st.title("小包子")
 st.divider()
 
 # 初始化聊天记录（存在浏览器的内存里）
@@ -41,7 +41,7 @@ if prompt := st.chat_input("和你的宠物说点什么吧..."):
             
             # 这里是“模拟大脑”，用简单的规则代替真正的大模型
             if "你好" in prompt or "hello" in prompt.lower():
-                ai_reply = "汪汪/喵喵！主人好呀！"
+                ai_reply = "喵喵！主人好呀！"
             elif "吃" in prompt:
                 ai_reply = "我饿了！想吃小鱼干或者喂我一点数据垃圾~"
             elif "你是谁" in prompt:
