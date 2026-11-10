@@ -22,8 +22,7 @@ st.title("🐱 包子")
 st.divider()
 
 # 初始化聊天记录
-if "messages" not in st.session_state:
-    st.session_state.messages = [{"role": "assistant", "content": "主人你好！我已经接入了真实的大模型，现在我很聪明啦！"}]
+                        messages=[{"role": "system", "content": system_prompt}] + st.session_state.messages,
 
 # 循环展示历史聊天记录
 for msg in st.session_state.messages:
