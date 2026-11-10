@@ -3,7 +3,7 @@ import time
 import random
 
 # 设置网页标题
-st.set_page_config(page_title="我的 AI 宠物", page_icon="🐱", layout="centered")
+st.set_page_config(page_title="包子", page_icon="🐱", layout="centered")
 
 # 侧边栏
 with st.sidebar:
