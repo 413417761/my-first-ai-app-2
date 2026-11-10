@@ -5,13 +5,16 @@ from zhipuai import ZhipuAI
 st.set_page_config(page_title="包子", page_icon="🐱", layout="centered")
 
 # 侧边栏
-with st.sidebar:
-    st.title("🐱 宠物档案")
-    st.write("名字：Alessioo 的宠物小助手")
-    st.success("状态：已接入真实大模型大脑 🧠")
+    st.divider()
+    # 让用户自己定义 AI 的性格
+    system_prompt = st.text_area(
+        "设置 AI 角色（性格）：", 
+        value="你是一只可爱的、性格有点傲娇的电子宠物。请用简短、活泼的语气和主人聊天。",
+        height=100
+    )
     
     # ⚠️ 这里需要输入你的 API Key
-    api_key = st.text_input("请输入你的智谱 API Key：", type="password")
+    api_key = st.text_input("请输入你的智谱 API Key：", type="1ffaddef53ed48e7983604dd0f4b2b04.rtThKFgA5YzbLfqR")
     st.info("你的 Key 只会在本地浏览器中运行，不会上传到服务器，放心使用。")
 
 # 网页主体
