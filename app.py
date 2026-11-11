@@ -71,9 +71,11 @@ if prompt := st.chat_input("和你的宠物说点什么吧..."):
                             if chunk.choices[0].delta.content is not None:
                                 yield chunk.choices[0].delta.content
                     
-                    # st.write_stream 展现打字机效果
+                                        # st.write_stream 展现打字机效果
                     ai_reply = st.write_stream(generate_chunks())
                     
+                    # 把 AI 的回复存进记录里
                     st.session_state.messages.append({"role": "assistant", "content": ai_reply})
-                except Exception as e:
+                                        # 触发一个底部弹窗提示
+                    st.toast('包子发来了一条新消息！', icon='🐱')
                     st.error(f"AI 连不上网啦，报错信息：{e}")
