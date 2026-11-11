@@ -10,7 +10,6 @@ with st.sidebar:
     st.write("名字：包子")
     st.success("状态：已接入真实大模型大脑 (安全模式)")
     
-    # 这里的代码都在 with st.sidebar: 的缩进里，完美对齐
     st.divider()
     system_prompt = st.text_area(
         "设置 AI 角色（性格）：", 
@@ -24,7 +23,6 @@ with st.sidebar:
         st.rerun()
 
 # 从云端保险箱读取 Key
-# 注意：如果你在本地跑，可能会报错，因为在云端设置了 Secrets 才有
 try:
     api_key = st.secrets["ZHIPU_KEY"]
 except:
@@ -64,18 +62,17 @@ if prompt := st.chat_input("和你的宠物说点什么吧..."):
                         stream=True  # 开启流式输出
                     )
                     
-                    # 用生成器把字一个一个吐出来
                     def generate_chunks():
                         for chunk in response:
-                            # 防止有些空包报错
                             if chunk.choices[0].delta.content is not None:
                                 yield chunk.choices[0].delta.content
                     
-                                        # st.write_stream 展现打字机效果
                     ai_reply = st.write_stream(generate_chunks())
                     
-                    # 把 AI 的回复存进记录里
                     st.session_state.messages.append({"role": "assistant", "content": ai_reply})
-                                        # 触发一个底部弹窗提示
+                    
+                    # 这是你要测的 Toast
                     st.toast('包子发来了一条新消息！', icon='🐱')
+                    
+                except Exception as e:
                     st.error(f"AI 连不上网啦，报错信息：{e}")
