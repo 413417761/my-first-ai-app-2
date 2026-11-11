@@ -47,13 +47,25 @@ if prompt := st.chat_input("和你的宠物说点什么吧..."):
         with st.chat_message("assistant"):
             message_placeholder = st.empty()
             with st.spinner("包子思考中..."):
-                try:
+                 try:
                     client = ZhipuAI(api_key=api_key)
                     response = client.chat.completions.create(
                         model="glm-4-flash",
                         messages=[{"role": "system", "content": system_prompt}] + st.session_state.messages,
-                        stream=False
+                        stream=True  # 开启流式输出
                     )
+                    
+                    # 用生成器把字一个一个吐出来
+                    def generate_chunks():
+                        for chunk in response:
+                            yield chunk.choices[0].delta.content
+                    
+                    # st.write_stream 可以完美呈现打字机效果
+                    ai_reply = st.write_stream(generate_chunks())
+                    
+                    st.session_state.messages.append({"role": "assistant", "content": ai_reply})
+                except Exception as e:
+                    st.error(f"AI 连不上网啦，报错信息：{e}")
                     ai_reply = response.choices[0].message.content
                     message_placeholder.write(ai_reply)
                     
