@@ -10,8 +10,8 @@ with st.sidebar:
     st.write("名字：包子")
     st.success("状态：已接入真实大模型大脑 ")
     
-    api_key = st.text_input("请输入你的Key：", type="password")
-    st.info("你的 Key 只会在本地浏览器中运行，不会上传到服务器，放心使用。")
+# 直接从后台保险箱读取 Key
+api_key = st.secrets["ZHIPU_KEY"] 
     
     st.divider()
     system_prompt = st.text_area(
