@@ -27,18 +27,22 @@ with st.sidebar:
     st.write(f"当前剩余对话额度：**{st.session_state.usage_count}** 次")
     
     # --- 卡密兑换区 ---
-    with st.expander("💳 额度用完了？点击解锁"):
-        st.write("扫码支付 9.9 元，获取专属卡密（测试请填 VIP888）")
-        # 这里放一个假的二维码图片占位
-        st.image("https://dummyimage.com/200x200/000/fff&text=Scan+to+Pay+9.9", caption="演示用二维码")
-        
-        card_code = st.text_input("输入你的卡密：", type="password")
+           card_code = st.text_input("输入你的卡密：", type="password")
         if st.button("立即兑换"):
-            if card_code == "VIP888":
-                st.session_state.usage_count += 999
-                st.success("兑换成功！额度已充满！")
+            # 从云端保险柜读取卡密池
+            valid_codes = st.secrets["VIP_CODES"]
+            
+            # 检查用户输入的卡密是否在保险柜的值里面
+            if card_code in valid_codes.values():
+                # 检查这个卡密是不是已经在这台电脑上用过了（防重复）
+                if f"used_{card_code}" not in st.session_state:
+                    st.session_state.usage_count += 999
+                    st.session_state[f"used_{card_code}"] = True # 标记已使用
+                    st.success("兑换成功！额度已充满！")
+                else:
+                    st.error("这个卡密已经被使用了哦！")
             else:
-                st.error("卡密错误，请重新输入！")
+                st.error("卡密无效，请确认后重试！")
     
     st.divider()
     if st.button("🗑️ 清空聊天记忆", use_container_width=True):
